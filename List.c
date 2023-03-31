@@ -127,18 +127,6 @@ void List_Cursor_back( List* list )
 
 bool List_Cursor_next( List* list )
 {
-#if 0 
-   if( !list->cursor->next )
-   {
-      list->cursor = list->cursor->next;
-      return false;
-   }
-   else
-   {
-      list->cursor = list->first;
-      return true;
-   }
-#endif  
    list->cursor = list->cursor->next;
    return list->cursor;
 }

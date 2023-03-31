@@ -30,10 +30,6 @@
 // Esta versión no borra elementos
 // Esta versión no modifica los datos originales
 
-#ifndef PRINT_LEVEL
-#define PRINT_LEVEL 1
-#endif  
-
 #ifndef DBG_HELP
 #define DBG_HELP 0
 #endif  
@@ -92,8 +88,6 @@ void Vertex_Start( Vertex* v )
  */
 void Vertex_Next( Vertex* v )
 {
-//   assert( v->cursor );
-
    List_Cursor_next( v->neighbors );
 }
 
@@ -126,7 +120,7 @@ bool Vertex_End( const Vertex* v )
    Vertex* v = Graph_GetVertexByKey( grafo, 100 );
    for( Vertex_Start( v ); !Vertex_End( v ); Vertex_Next( v ) )
    {
-      int index = Vertex_GetNeighborGetIndex( v );
+      int index = Vertex_GetNeighborIndex( v );
 
       Item val = Graph_GetDataByIndex( g, index );
 
@@ -136,10 +130,9 @@ bool Vertex_End( const Vertex* v )
    @note Esta función debe utilizarse únicamente cuando se recorra el grafo con las funciones 
    Vertex_Start(), Vertex_End() y Vertex_Next().
  */
-int Vertex_GetNeighborGetIndex( const Vertex* v )
+int Vertex_GetNeighborIndex( const Vertex* v )
 {
    return List_Cursor_get( v->neighbors );
-
 }
 
 
@@ -375,6 +368,7 @@ bool Graph_AddEdge( Graph* g, int start, int finish )
    return true;
 }
 
+
 int Graph_GetLen( Graph* g )
 {
    return g->len;
@@ -438,8 +432,8 @@ int main()
    Graph_AddEdge( grafo, 300, 500 );
    Graph_AddEdge( grafo, 400, 500 );
 
-   Graph_Print( grafo, PRINT_LEVEL );
-   // imprime el grafo completo
+   Graph_Print( grafo, 0 );
+   // imprime el grafo completo (esta versión no usa al segundo argumento)
 
 
 
