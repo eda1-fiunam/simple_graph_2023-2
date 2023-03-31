@@ -8,10 +8,17 @@
 #include <stdbool.h>
 #include <assert.h>
 
+typedef struct
+{
+   int   index;
+   float weight;
+} Data;
+
 typedef struct Node
 {
-   int data;
-   
+//   int data;
+   Data data;
+
    struct Node* next;
    struct Node* prev;
 } Node;
@@ -26,10 +33,10 @@ typedef struct
 List* List_New();
 void List_Delete( List** p_list );
 
-void List_Push_back( List* list, int item );
+void List_Push_back( List* list, int index, float weight );
 void List_Pop_back( List* list );
 
-void List_Push_front( List* list, int item );
+void List_Push_front( List* list, int index, float weight );
 void List_Pop_front( List* list );
 
 bool List_Is_empty( List* list );
@@ -60,7 +67,7 @@ bool List_Cursor_end( List* list );
  *
  * @pre El cursor debe apuntar a una posición válida.
  */
-int List_Cursor_get( List* list );
+Data List_Cursor_get( List* list );
 
 /**
  * @brief Elimina el elemento apuntado por el cursor.
@@ -79,6 +86,6 @@ void List_Cursor_erase( List* list );
  * @param list Una lista.
  * @param fn Función unaria que será aplicada a cada elemento de la lista.
  */
-void List_For_each( List* list, void (*fn)( int ) );
+void List_For_each( List* list, void (*fn)( int, float ) );
 
 #endif   /* ----- #ifndef DLL_INC  ----- */

@@ -1,12 +1,13 @@
 
 #include "List.h"
 
-static Node* new_node( int data )
+static Node* new_node( int index, float weight )
 {
    Node* n = (Node*) malloc( sizeof( Node ) );
    if( n != NULL )
    {
-      n->data = data;
+      n->data.index = index;
+      n->data.weight = weight;
 
       n->next = NULL;
       n->prev = NULL;
@@ -40,9 +41,9 @@ void List_Delete( List** p_list )
    *p_list = NULL;
 }
 
-void List_Push_back( List* list, int item )
+void List_Push_back( List* list, int data, float weight )
 {
-   Node* n = new_node( item );
+   Node* n = new_node( data, weight );
    assert( n );
 
    if( list->first != NULL )
@@ -98,7 +99,7 @@ bool List_Find( List* list, int key )
    Node* start = list->first;
    while( start )
    {
-      if( start->data == key )
+      if( start->data.index == key )
       {
          list->cursor = start;
          return true;
@@ -142,7 +143,7 @@ bool List_Cursor_end( List* list )
    return list->cursor;
 }
 
-int  List_Cursor_get( List* list )
+Data  List_Cursor_get( List* list )
 {
    assert( list->cursor );
 
@@ -167,14 +168,14 @@ void List_Cursor_erase( List* list );
  * @param list Una lista.
  * @param fn Función unaria que será aplicada a cada elemento de la lista.
  */
-void List_For_each( List* list, void (*fn)( int ) )
+void List_For_each( List* list, void (*fn)( int, float ) )
 {
    Node* it = list->first;
    // |it| es la abreviación de "iterator", o  en español, "iterador"
 
    while( it != NULL )
    {
-      fn( ( it->data ) );
+      fn( it->data.index, it->data.weight );
 
       it = it->next;
    }

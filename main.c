@@ -130,7 +130,7 @@ bool Vertex_End( const Vertex* v )
    @note Esta función debe utilizarse únicamente cuando se recorra el grafo con las funciones 
    Vertex_Start(), Vertex_End() y Vertex_Next().
  */
-int Vertex_GetNeighborIndex( const Vertex* v )
+Data Vertex_GetNeighborIndex( const Vertex* v )
 {
    return List_Cursor_get( v->neighbors );
 }
@@ -196,7 +196,7 @@ static bool find_neighbor( Vertex* v, int index )
 
 // vertex: vértice de trabajo
 // index: índice en la lista de vértices del vértice vecino que está por insertarse
-static void insert( Vertex* vertex, int index )
+static void insert( Vertex* vertex, int index, float weigth )
 {
    // crear la lista si no existe!
    
@@ -207,7 +207,7 @@ static void insert( Vertex* vertex, int index )
 
    if( vertex->neighbors && !find_neighbor( vertex, index ) )
    {
-      List_Push_back( vertex->neighbors, index );
+      List_Push_back( vertex->neighbors, index, weigth );
 
       DBG_PRINT( "insert():Inserting the neighbor with idx:%d\n", index );
    } 
@@ -299,7 +299,9 @@ void Graph_Print( Graph* g, int depth )
               List_Cursor_end( vertex->neighbors );
               List_Cursor_next( vertex->neighbors ) )
          {
-            int neighbor_idx = List_Cursor_get( vertex->neighbors );
+
+            Data d = List_Cursor_get( vertex->neighbors );
+            int neighbor_idx = d.index;
 
             printf( "%d->", g->vertices[ neighbor_idx ].data );
          }
@@ -359,10 +361,10 @@ bool Graph_AddEdge( Graph* g, int start, int finish )
    if( start_idx == -1 || finish_idx == -1 ) return false;
    // uno o ambos vértices no existen
 
-   insert( &g->vertices[ start_idx ], finish_idx );
+   insert( &g->vertices[ start_idx ], finish_idx, 0.0 );
    // insertamos la arista start-finish
 
-   if( g->type == eGraphType_UNDIRECTED ) insert( &g->vertices[ finish_idx ], start_idx );
+   if( g->type == eGraphType_UNDIRECTED ) insert( &g->vertices[ finish_idx ], start_idx, 0.0 );
    // si el grafo no es dirigido, entonces insertamos la arista finish-start
 
    return true;
