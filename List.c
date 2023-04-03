@@ -140,7 +140,7 @@ bool List_Cursor_prev( List* list )
 
 bool List_Cursor_end( List* list )
 {
-   return list->cursor;
+   return list->cursor == NULL;
 }
 
 Data  List_Cursor_get( List* list )
