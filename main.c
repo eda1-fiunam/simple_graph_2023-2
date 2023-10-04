@@ -296,7 +296,7 @@ void Graph_Print( Graph* g, int depth )
       if( vertex->neighbors )
       {
          for( List_Cursor_front( vertex->neighbors );
-              List_Cursor_end( vertex->neighbors );
+              ! List_Cursor_end( vertex->neighbors );
               List_Cursor_next( vertex->neighbors ) )
          {
 
